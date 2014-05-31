@@ -1,0 +1,23 @@
+{
+    "name": "forumhulp/copy_lang",
+    "type": "phpbb-extension",
+    "description": "Copy language from master.",
+    "homepage": "http://forumhulp.com/",
+    "version": "3.1.0",
+    "time": "2014-06-01",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "John Peskens",
+            "homepage": "http://forumhulp.com/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3",
+        "phpbb/phpbb": "3.1.*@dev"
+    },
+    "extra": {
+        "display-name": "Copy Language"
+    }
+}

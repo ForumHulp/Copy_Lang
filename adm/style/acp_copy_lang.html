@@ -1,0 +1,49 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<h1>Copy Language Pack</h1>
+
+<p>{L_ACP_COPY_LANG_EXPLAIN}</p>
+
+	<form id="selectmethod" method="post" action="">
+
+	<fieldset>
+		<legend>Copy language from to:</legend>
+		<select name="language_from" onchange="document.getElementById('language_from').value=this.options[selectedIndex].value">{S_LANG_OPTIONS}</select>
+		<select name="language_to" onchange="document.getElementById('language_to').value=this.options[selectedIndex].value">{S_LANG_COPY_FROM}</select>&nbsp;<input type="submit" class="button2" name="change" value="{L_SELECT}" /> <input style="float:right;" type="submit" class="button2" name="submit" value="Translate package" />
+	</fieldset>
+
+	</form>
+
+
+	<form id="selectmethod" method="post" action="">
+
+	<fieldset>
+		<legend>Show languagefile:</legend>
+		<select name="language_show" onchange="this.form.submit();">{S_LANG_SHOW}</select>
+        <input type="hidden" name="language_from" id="language_from" value="{LANG_FROM}" />
+        <input type="hidden" name="language_to" id="language_to" value="{LANG_TO}" />       
+	</fieldset>
+
+	</form>
+
+	<table class="table1">
+	<thead>
+		<tr>
+			<th>{L_LANGUAGE_KEY}</th>
+			<th>{L_LANGUAGE_VARIABLE}</th>
+			<th>Copy Language</th>
+		</tr>
+	<tr>
+	</thead>
+	<tbody>
+
+
+{TPL}
+
+
+	</tbody>
+	</table>
+
+<!-- INCLUDE overall_footer.html -->

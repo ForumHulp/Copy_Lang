@@ -1,0 +1,7 @@
+services:
+    forumhulp.copy_lang.listener:
+        class: forumhulp\copy_lang\event\listener
+        arguments:
+            - @controller.helper
+        tags:
+            - { name: event.listener }
