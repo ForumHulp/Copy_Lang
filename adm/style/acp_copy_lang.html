@@ -16,18 +16,18 @@
 
 	</form>
 
-
+	<!-- IF S_LANG_SHOW -->
 	<form id="selectmethod" method="post" action="">
 
 	<fieldset>
-		<legend>Show languagefile:</legend>
+		<legend>Show language file:</legend>
 		<select name="language_show" onchange="this.form.submit();">{S_LANG_SHOW}</select>
         <input type="hidden" name="language_from" id="language_from" value="{LANG_FROM}" />
         <input type="hidden" name="language_to" id="language_to" value="{LANG_TO}" />       
 	</fieldset>
 
 	</form>
-
+	<!-- IF TPL -->
 	<table class="table1">
 	<thead>
 		<tr>
@@ -38,12 +38,9 @@
 	<tr>
 	</thead>
 	<tbody>
-
-
 {TPL}
-
-
 	</tbody>
 	</table>
-
+	<!-- ENDIF -->
+    <!-- ENDIF -->
 <!-- INCLUDE overall_footer.html -->

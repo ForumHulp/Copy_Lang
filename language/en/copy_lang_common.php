@@ -20,6 +20,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
     'ACP_COPY_LANG' 	=> 'Copy language pack',
 	'LANGUAGE_FILES'	=> 'Language files',
+	'LANGUAGE_PACK'	=> 'Language pack',
 
 	'ACP_COPY_LANG_EXPLAIN'	=> 'Copy language pack in store folder from one language to another. This function copies only parameters from the "from" pack to the "to" pack.'
 ));

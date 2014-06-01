@@ -51,19 +51,18 @@ class copy_lang_module
 		
 		if (sizeof($new_ary))
 		{
-			$s_lang_options = $s_lang_copy_to = '<option value="" class="sep">' . $user->lang['LANGUAGE_FILES'] . '</option>';
+			$s_lang_options = $s_lang_copy_to = '<option value="" class="sep">' . $user->lang['LANGUAGE_PACK'] . '</option>';
 			foreach ($new_ary as $iso => $lang_ary)
 			{
 				$template->assign_block_vars('languages', array(
 					'ISO'			=> htmlspecialchars($lang_ary['iso']),
 					'LOCAL_NAME'	=> htmlspecialchars($lang_ary['local_name'], ENT_COMPAT, 'UTF-8'),
-					'NAME'			=> htmlspecialchars($lang_ary['name'], ENT_COMPAT, 'UTF-8'),
-					'U_INSTALL'		=> $this->u_action . '&amp;action=install&amp;iso=' . urlencode($lang_ary['iso']))
+					'NAME'			=> htmlspecialchars($lang_ary['name'], ENT_COMPAT, 'UTF-8'))
 				);
 				$selected = (htmlspecialchars($lang_ary['iso']) == request_var('language_from', '')) ? ' selected="selected"' : '';
 				$selected_copy_to = (htmlspecialchars($lang_ary['iso']) == request_var('language_to', '')) ? ' selected="selected"' : '';
-				$s_lang_options .= '<option value="' . htmlspecialchars($lang_ary['iso']) . '"' . $selected . '>' . htmlspecialchars($lang_ary['iso']) . '</option>';
-				$s_lang_copy_to .= '<option value="' . htmlspecialchars($lang_ary['iso']) . '"' . $selected_copy_to . '>' . htmlspecialchars($lang_ary['iso']) . '</option>';
+				$s_lang_options .= '<option value="' . htmlspecialchars($lang_ary['iso']) . '"' . $selected . '>' . htmlspecialchars($lang_ary['local_name']) . '</option>';
+				$s_lang_copy_to .= '<option value="' . htmlspecialchars($lang_ary['iso']) . '"' . $selected_copy_to . '>' . htmlspecialchars($lang_ary['local_name']) . '</option>';
 			}
 			$template->assign_vars(array('S_LANG_OPTIONS' =>  $s_lang_options, 'S_LANG_COPY_FROM' =>  $s_lang_copy_to));
 		}
@@ -134,6 +133,7 @@ $lang = array_merge($lang, array(
 				foreach ($files as $file)
 				{
 					$filename = $dir . $file;
+			
 					$header = str_replace(array('{FILENAME}', '{LANG_NAME}', '{CHANGED}', '{AUTHOR}'), 
 							   array($file, $to_iso, date('Y-m-d', time()), 'ForumHulp.com'), $this->language_file_header);
 					$fp = @fopen($filename, 'wb');
@@ -141,13 +141,13 @@ $lang = array_merge($lang, array(
 					fwrite($fp, $header);
 
 					$this->language_file = $file;
-					$this->language_directory = $phpbb_root_path . 'store/' . $from_iso . '/';
+					$this->language_directory = $phpbb_root_path . 'store/' . $from_iso . '/' . (($key != '') ? $key . '/' : '');
 					include($this->language_directory . $this->language_file);
 				
 					$entry_value = $lang;
 					unset($lang);
 				
-					$this->language_copy_directory = $phpbb_root_path . 'store/' . $to_iso . '/';
+					$this->language_copy_directory = $phpbb_root_path . 'store/' . $to_iso . '/' . (($key != '') ? $key . '/' : '');
 					if (file_exists($this->language_copy_directory . $this->language_file))
 					{
 						include($this->language_copy_directory . $this->language_file);
@@ -158,12 +158,15 @@ $lang = array_merge($lang, array(
 					}
 					unset($lang);
 					
-					foreach ($entry_value as $key => $value)
+					$tpl = $this->language_entries($entry_value, '', $copy_lang);
+					fwrite($fp, $tpl);
+					
+				/*	foreach ($entry_value as $key => $value)
 					{
 						$entry = $this->format_lang_array(htmlspecialchars_decode($key), (isset($copy_lang[$key]) ? htmlspecialchars_decode($copy_lang[$key]) : ''));
 						fwrite($fp, $entry);
 					}
-
+*/
 					$footer = "));\n\n?>";
 					fwrite($fp, $footer);
 					fclose($fp);
@@ -240,7 +243,7 @@ $lang = array_merge($lang, array(
 				// Write key
 				$tpl .= '
 				<tr>
-					<td class="row3" colspan="3">' . htmlspecialchars($key_prefix, ENT_COMPAT, 'UTF-8') . '<strong>' . htmlspecialchars($key, ENT_COMPAT, 'UTF-8') . '</strong></td>
+					<td class="row3" colspan="3" valign="top">' . htmlspecialchars($key_prefix, ENT_COMPAT, 'UTF-8') . '<strong>' . htmlspecialchars($key, ENT_COMPAT, 'UTF-8') . '</strong></td>
 				</tr>';
 
 				foreach ($value as $_key => $_value)
@@ -250,7 +253,7 @@ $lang = array_merge($lang, array(
 						// Write key
 						$tpl .= '
 							<tr>
-								<td class="row3" colspan="3">' . htmlspecialchars($key_prefix, ENT_COMPAT, 'UTF-8') . '&nbsp; &nbsp;<strong>' . htmlspecialchars($_key, ENT_COMPAT, 'UTF-8') . '</strong></td>
+								<td class="row3" colspan="3" valign="top">' . htmlspecialchars($key_prefix, ENT_COMPAT, 'UTF-8') . '&nbsp; &nbsp;<strong>' . htmlspecialchars($_key, ENT_COMPAT, 'UTF-8') . '</strong></td>
 							</tr>';
 
 						foreach ($_value as $__key => $__value)
@@ -258,15 +261,15 @@ $lang = array_merge($lang, array(
 							// Write key
 							$tpl .= '
 								<tr>
-									<td class="row1" style="white-space: nowrap;">' . htmlspecialchars($key_prefix, ENT_COMPAT, 'UTF-8') . '<strong>' . htmlspecialchars($__key, ENT_COMPAT, 'UTF-8') . '</strong></td>
-									<td class="row2">';
+									<td class="row1" style="white-space: nowrap;" valign="top">' . htmlspecialchars($key_prefix, ENT_COMPAT, 'UTF-8') . '<strong>' . htmlspecialchars($__key, ENT_COMPAT, 'UTF-8') . '</strong></td>
+									<td class="row2" valign="top">';
 
 							$tpl .= $__value;
 
 							$tpl .= '</td>
 
 
-							<td class="row2">';
+							<td class="row2" valign="top">';
 
 							$tpl .= (isset($copy_lang[$key][$_key][$__key])) ? $copy_lang[$key][$_key][$__key] : '';
 
@@ -279,14 +282,14 @@ $lang = array_merge($lang, array(
 						// Write key
 						$tpl .= '
 							<tr>
-								<td class="row1" style="white-space: nowrap;">' . htmlspecialchars($key_prefix, ENT_COMPAT, 'UTF-8') . '<strong>' . htmlspecialchars($_key, ENT_COMPAT, 'UTF-8') . '</strong></td>
-								<td class="row2">';
+								<td class="row1" style="white-space: nowrap;" valign="top">' . htmlspecialchars($key_prefix, ENT_COMPAT, 'UTF-8') . '<strong>' . htmlspecialchars($_key, ENT_COMPAT, 'UTF-8') . '</strong></td>
+								<td class="row2" valign="top">';
 
 						$tpl .= $_value;
 
 						$tpl .= '</td>
 
-								<td class="row2">';
+								<td class="row2" valign="top">';
 
 						$tpl .= (isset($copy_lang[$key][$_key])) ? $copy_lang[$key][$_key] : '';
 
@@ -305,14 +308,14 @@ $lang = array_merge($lang, array(
 				// Write key
 				$tpl .= '
 				<tr>
-					<td class="row1" style="white-space: nowrap;">' . htmlspecialchars($key_prefix, ENT_COMPAT, 'UTF-8') . '<strong>' . htmlspecialchars($key, ENT_COMPAT, 'UTF-8') . '</strong></td>
-					<td class="row2">';
+					<td class="row1" style="white-space: nowrap;" valign="top">' . htmlspecialchars($key_prefix, ENT_COMPAT, 'UTF-8') . '<strong>' . htmlspecialchars($key, ENT_COMPAT, 'UTF-8') . '</strong></td>
+					<td class="row2" valign="top">';
 
 				$tpl .= $value;
 
 				$tpl .= '</td>
 					
-					<td class="row2">';
+					<td class="row2" valign="top">';
 
 				$tpl .= (isset($copy_lang[$key])) ? $copy_lang[$key] : '';
 
@@ -323,6 +326,53 @@ $lang = array_merge($lang, array(
 
 		return $tpl;
 	}
+
+	/**
+	* Print language entries
+	*/
+	function language_entries(&$lang_ary, $key_prefix = '', $copy_lang)
+	{
+		$tpl = '';
+
+		foreach ($lang_ary as $key => $value)
+		{
+			if (is_array($value))
+			{
+				// Write key
+				$tpl .= htmlspecialchars($key, ENT_COMPAT, 'UTF-8');
+
+				foreach ($value as $_key => $_value)
+				{
+					if (is_array($_value))
+					{
+						// Write key
+						$tpl .= htmlspecialchars($_key, ENT_COMPAT, 'UTF-8');
+
+						foreach ($_value as $__key => $__value)
+						{
+							// Write key
+							$tpl .= (isset($copy_lang[$key][$_key][$__key])) ? $this->format_lang_array( htmlspecialchars($__key, ENT_COMPAT, 'UTF-8'), $copy_lang[$key][$_key][$__key]) : $this->format_lang_array( htmlspecialchars($__key, ENT_COMPAT, 'UTF-8'),'');
+						}
+					}
+					else
+					{
+						// Write key
+						$tpl .= (isset($copy_lang[$key][$_key])) ? $this->format_lang_array(htmlspecialchars($_key, ENT_COMPAT, 'UTF-8'), $copy_lang[$key][$_key]) : $this->format_lang_array(htmlspecialchars($_key, ENT_COMPAT, 'UTF-8'), '');
+					}
+				}
+			}
+			else
+			{
+				// Write key
+				$tpl .= (isset($copy_lang[$key])) ? $this->format_lang_array(htmlspecialchars($key, ENT_COMPAT, 'UTF-8'), $copy_lang[$key]) : $this->format_lang_array(htmlspecialchars($key, ENT_COMPAT, 'UTF-8'), '');
+			}
+		}
+
+		return $tpl;
+	}
+
+
+
 	
 	/**
 	* Return language string value for storage
