@@ -339,20 +339,21 @@ $lang = array_merge($lang, array(
 			if (is_array($value))
 			{
 				// Write key
-				$tpl .= htmlspecialchars($key, ENT_COMPAT, 'UTF-8');
+				$tpl .= '\'' . htmlspecialchars($key, ENT_COMPAT, 'UTF-8') . '\' => array(' . "\n";
 
 				foreach ($value as $_key => $_value)
 				{
 					if (is_array($_value))
 					{
 						// Write key
-						$tpl .= htmlspecialchars($_key, ENT_COMPAT, 'UTF-8');
+						$tpl .= '\'' . htmlspecialchars($_key, ENT_COMPAT, 'UTF-8') . '\' => array(' . "\n";
 
 						foreach ($_value as $__key => $__value)
 						{
 							// Write key
 							$tpl .= (isset($copy_lang[$key][$_key][$__key])) ? $this->format_lang_array( htmlspecialchars($__key, ENT_COMPAT, 'UTF-8'), $copy_lang[$key][$_key][$__key]) : $this->format_lang_array( htmlspecialchars($__key, ENT_COMPAT, 'UTF-8'),'');
 						}
+						$tpl .= '),';
 					}
 					else
 					{
@@ -360,6 +361,7 @@ $lang = array_merge($lang, array(
 						$tpl .= (isset($copy_lang[$key][$_key])) ? $this->format_lang_array(htmlspecialchars($_key, ENT_COMPAT, 'UTF-8'), $copy_lang[$key][$_key]) : $this->format_lang_array(htmlspecialchars($_key, ENT_COMPAT, 'UTF-8'), '');
 					}
 				}
+				$tpl .= '),' . "\n";
 			}
 			else
 			{
