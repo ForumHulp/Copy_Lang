@@ -141,7 +141,7 @@ $lang = array_merge($lang, array(
 				{
 					$filename = $dir . $file;
 
-					$header = str_replace(array('{FILENAME}', '{LANG_NAME}', '{CHANGED}', '{AUTHOR}'), 
+					$header = str_replace(array('{FILENAME}', '{LANG_NAME}', '{CHANGED}', '{AUTHOR}'),
 								array($file, $to_iso, date('Y-m-d', time()), 'ForumHulp.com'), $this->language_file_header);
 					$fp = @fopen($filename, 'wb');
 					$header .= $this->lang_header;
@@ -150,7 +150,7 @@ $lang = array_merge($lang, array(
 					$this->language_file = $file;
 					$this->language_directory = $phpbb_root_path . 'store/' . $from_iso . '/' . (($key != '') ? $key . '/' : '');
 					include($this->language_directory . $this->language_file);
-					
+
 					$entry_value = $lang;
 					unset($lang);
 
@@ -165,7 +165,7 @@ $lang = array_merge($lang, array(
 					}
 					unset($lang);
 
-					$tpl = $this->language_entries($entry_value, '', $copy_lang);
+					$tpl = $this->language_entries($entry_value, $copy_lang, '');
 					fwrite($fp, $tpl);
 
 				/*	foreach ($entry_value as $key => $value)
@@ -199,11 +199,14 @@ $lang = array_merge($lang, array(
 				{
 					$selected = ($key . $file == request_var('language_show', '')) ? ' selected="selected"' : '';
 					$s_lang_option .= '<option value="' . (($key != '') ? $key : '') . $file . '"' . $selected . '>&nbsp;&nbsp;' . $file . '</option>';
-					if (!in_array($file, $this->copy_files[$key])) $missing_files[$key][] = $file;
+					if (!in_array($file, $this->copy_files[$key]))
+					{
+						$missing_files[$key][] = $file;
+					}
 				}
 			}
 			$missing_file = '';
-			
+
 			foreach ($missing_files as $key => $files)
 			{
 				$missing_file .= $key . ' => ';
@@ -213,8 +216,8 @@ $lang = array_merge($lang, array(
 				}
 				$missing_file .= '<br />';
 			}
-			$template->assign_vars(array('S_LANG_SHOW' =>  $s_lang_option, 'LANG_FROM' => request_var('language_from', ''), 
-										  'LANG_TO' => request_var('language_to', ''), 'MISSING_FILES' => $missing_file));
+			$template->assign_vars(array('S_LANG_SHOW' =>  $s_lang_option, 'LANG_FROM' => request_var('language_from', ''),
+										'LANG_TO' => request_var('language_to', ''), 'MISSING_FILES' => $missing_file));
 
 			if (request_var('language_show', ''))
 			{
@@ -235,10 +238,10 @@ $lang = array_merge($lang, array(
 				{
 					$copy_lang = array();
 				}
-				$tpl = $this->print_language_entries($or_lang, '', $copy_lang);
+				$tpl = $this->print_language_entries($or_lang, $copy_lang, '');
 
 				$template->assign_var('TPL', $tpl);
-				unset($tpl);		
+				unset($tpl);
 			}
 		}
 
@@ -249,7 +252,7 @@ $lang = array_merge($lang, array(
 	/**
 	* Print language entries
 	*/
-	function print_language_entries(&$lang_ary, $key_prefix = '', $copy_lang, $input_field = false)
+	function print_language_entries(&$lang_ary, $copy_lang, $key_prefix = '', $input_field = false)
 	{
 		$tpl = '';
 
@@ -345,7 +348,7 @@ $lang = array_merge($lang, array(
 	/**
 	* Print language entries
 	*/
-	function language_entries(&$lang_ary, $key_prefix = '', $copy_lang)
+	function language_entries(&$lang_ary, $copy_lang, $key_prefix = '')
 	{
 		$tpl = '';
 

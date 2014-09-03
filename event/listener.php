@@ -19,25 +19,25 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 */
 class listener implements EventSubscriberInterface
 {
-    /* @var \phpbb\controller\helper */
-    protected $helper;
-  
-    /**
-    * Constructor
-    *
-    * @param \phpbb\controller\helper    $helper        Controller helper object
-    */
-    public function __construct(\phpbb\controller\helper $helper)
-    {
-        $this->helper = $helper;
-    }
+	/* @var \phpbb\controller\helper */
+	protected $helper;
 
-    static public function getSubscribedEvents()
-    {
-        return array(
-			'core.user_setup'					=> 'load_language_on_setup'
+	/**
+	* Constructor
+	*
+	* @param \phpbb\controller\helper    $helper        Controller helper object
+	*/
+	public function __construct(\phpbb\controller\helper $helper)
+	{
+		$this->helper = $helper;
+	}
+
+	static public function getSubscribedEvents()
+	{
+		return array(
+			'core.user_setup'	=> 'load_language_on_setup'
 		);
-    }
+	}
 
 	public function load_language_on_setup($event)
 	{
