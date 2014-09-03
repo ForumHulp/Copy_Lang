@@ -9,16 +9,16 @@
 
 if (!defined('IN_PHPBB'))
 {
-        exit;
+	exit;
 }
 
 if (empty($lang) || !is_array($lang))
 {
-        $lang = array();
+	$lang = array();
 }
 
 $lang = array_merge($lang, array(
-    'ACP_COPY_LANG' 	=> 'Copy language pack',
+	'ACP_COPY_LANG' 	=> 'Copy language pack',
 	'LANGUAGE_FILES'	=> 'Language files',
 	'LANGUAGE_PACK'	=> 'Language pack',
 

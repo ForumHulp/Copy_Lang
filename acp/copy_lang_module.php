@@ -7,9 +7,9 @@
 *
 */
 
-namespace forumhulp\copy_lang\acp;
+namespace forumhulp\copylang\acp;
 
-class copy_lang_module
+class copylang_module
 {
 	var $u_action;
 
@@ -48,7 +48,7 @@ class copy_lang_module
 			}
 			closedir($dp);
 		}
-		
+
 		if (sizeof($new_ary))
 		{
 			$s_lang_options = $s_lang_copy_to = '<option value="" class="sep">' . $user->lang['LANGUAGE_PACK'] . '</option>';
@@ -114,17 +114,17 @@ $lang = array_merge($lang, array(
 			$from_iso = request_var('language_from', '');
 			$to_iso = request_var('language_to', '');
 			$this->main_files = filelist($phpbb_root_path . 'store/' . $from_iso, '', $phpEx);
-		
+
 			$dir = $phpbb_root_path . 'store/language/' . $to_iso . '/';
 			mkdir($dir, 0777, true);
-			
+
 			$iso = file("{$phpbb_root_path}store/$to_iso/iso.txt");
 
 			$fp = @fopen($dir . 'iso.txt', 'wb');
 			$header = $iso[1] . $iso[0] . "ForumHulp.com";
 			fwrite($fp, $header);
 			fclose($fp);
-	
+
 			foreach ($this->main_files as $key => $files)
 			{
 				if (is_array($files) && sizeof($files) && $key != '')
@@ -140,9 +140,9 @@ $lang = array_merge($lang, array(
 				foreach ($files as $file)
 				{
 					$filename = $dir . $file;
-			
+
 					$header = str_replace(array('{FILENAME}', '{LANG_NAME}', '{CHANGED}', '{AUTHOR}'), 
-							   array($file, $to_iso, date('Y-m-d', time()), 'ForumHulp.com'), $this->language_file_header);
+								array($file, $to_iso, date('Y-m-d', time()), 'ForumHulp.com'), $this->language_file_header);
 					$fp = @fopen($filename, 'wb');
 					$header .= $this->lang_header;
 					fwrite($fp, $header);
@@ -150,10 +150,10 @@ $lang = array_merge($lang, array(
 					$this->language_file = $file;
 					$this->language_directory = $phpbb_root_path . 'store/' . $from_iso . '/' . (($key != '') ? $key . '/' : '');
 					include($this->language_directory . $this->language_file);
-				
+					
 					$entry_value = $lang;
 					unset($lang);
-				
+
 					$this->language_copy_directory = $phpbb_root_path . 'store/' . $to_iso . '/' . (($key != '') ? $key . '/' : '');
 					if (file_exists($this->language_copy_directory . $this->language_file))
 					{
@@ -164,10 +164,10 @@ $lang = array_merge($lang, array(
 						$copy_lang = array();
 					}
 					unset($lang);
-					
+
 					$tpl = $this->language_entries($entry_value, '', $copy_lang);
 					fwrite($fp, $tpl);
-					
+
 				/*	foreach ($entry_value as $key => $value)
 					{
 						$entry = $this->format_lang_array(htmlspecialchars_decode($key), (isset($copy_lang[$key]) ? htmlspecialchars_decode($copy_lang[$key]) : ''));
@@ -180,7 +180,6 @@ $lang = array_merge($lang, array(
 				}
 			}
 		}
-
 
 		if (request_var('language_from', '') && request_var('language_to', ''))
 		{
@@ -216,17 +215,16 @@ $lang = array_merge($lang, array(
 			}
 			$template->assign_vars(array('S_LANG_SHOW' =>  $s_lang_option, 'LANG_FROM' => request_var('language_from', ''), 
 										  'LANG_TO' => request_var('language_to', ''), 'MISSING_FILES' => $missing_file));
-		
-		
+
 			if (request_var('language_show', ''))
 			{
 				$this->language_file = request_var('language_show', '');
 				$this->language_directory = $phpbb_root_path . 'store/' . $from_iso . '/';
 				include($this->language_directory . $this->language_file);
-				
+
 				$or_lang = $lang;
 				unset($lang);
-				
+
 				$to_iso = request_var('language_to', '');
 				$this->language_copy_directory = $phpbb_root_path . 'store/' . $to_iso . '/';
 				if (file_exists($this->language_copy_directory . $this->language_file))
@@ -238,17 +236,15 @@ $lang = array_merge($lang, array(
 					$copy_lang = array();
 				}
 				$tpl = $this->print_language_entries($or_lang, '', $copy_lang);
-		
+
 				$template->assign_var('TPL', $tpl);
 				unset($tpl);		
 			}
 		}
 
-
 		$this->tpl_name = 'acp_copy_lang';
 		$this->page_title = 'ACP_COPY_LANG';
 	}
-
 
 	/**
 	* Print language entries
@@ -288,8 +284,6 @@ $lang = array_merge($lang, array(
 							$tpl .= $__value;
 
 							$tpl .= '</td>
-
-
 							<td class="row2" valign="top">';
 
 							$tpl .= (isset($copy_lang[$key][$_key][$__key])) ? $copy_lang[$key][$_key][$__key] : '';
@@ -390,13 +384,9 @@ $lang = array_merge($lang, array(
 				$tpl .= (isset($copy_lang[$key])) ? $this->format_lang_array(htmlspecialchars($key, ENT_COMPAT, 'UTF-8'), $copy_lang[$key]) : $this->format_lang_array(htmlspecialchars($key, ENT_COMPAT, 'UTF-8'), '');
 			}
 		}
-
 		return $tpl;
 	}
 
-
-
-	
 	/**
 	* Return language string value for storage
 	*/
@@ -440,5 +430,3 @@ $lang = array_merge($lang, array(
 		return $entry;
 	}
 }
-
-?>

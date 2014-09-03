@@ -1,5 +1,5 @@
 {
-    "name": "forumhulp/copy_lang",
+    "name": "forumhulp/copylang",
     "type": "phpbb-extension",
     "description": "Copy language from master.",
     "homepage": "http://forumhulp.com/",

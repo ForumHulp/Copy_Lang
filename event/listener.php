@@ -7,7 +7,7 @@
 *
 */
 
-namespace forumhulp\copy_lang\event;
+namespace forumhulp\copylang\event;
 
 /**
 * @ignore

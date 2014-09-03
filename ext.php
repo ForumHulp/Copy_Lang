@@ -7,7 +7,7 @@
 *
 */
 
-namespace forumhulp\copy_lang;
+namespace forumhulp\copylang;
 
 /**
 * Main extension class for this extension.

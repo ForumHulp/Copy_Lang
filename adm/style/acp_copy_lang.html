@@ -10,8 +10,8 @@
 
 	<fieldset>
 		<legend>Copy language from to:</legend>
-		<select name="language_from" onchange="document.getElementById('language_from').value=this.options[selectedIndex].value" title="Copy language pack from">{S_LANG_OPTIONS}</select>
-		<select name="language_to" onchange="document.getElementById('language_to').value=this.options[selectedIndex].value" title="Copy language pack to">{S_LANG_COPY_FROM}</select>&nbsp;<input type="submit" class="button2" name="change" value="{L_SELECT}" /> <!-- IF S_LANG_SHOW --><input style="float:right;" type="submit" class="button2" name="submit" value="Translate package" /><!-- ENDIF -->
+		<select name="language_from" onchange="document.getElementById('language_from').value=this.options[selectedIndex].value" title="Copy language pack from"><option value="" class="sep">-----</option>{S_LANG_OPTIONS}</select>
+		<select name="language_to" onchange="document.getElementById('language_to').value=this.options[selectedIndex].value" title="Copy language pack to"><option value="" class="sep">-----</option>{S_LANG_COPY_FROM}</select>&nbsp;<input type="submit" class="button2" name="change" value="{L_SELECT}" /> <!-- IF S_LANG_SHOW --><input style="float:right;" type="submit" class="button2" name="submit" value="Translate package" /><!-- ENDIF -->
 	</fieldset>
 
 	</form>
