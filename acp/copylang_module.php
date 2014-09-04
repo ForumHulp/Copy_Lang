@@ -496,7 +496,7 @@ if (empty($lang) || !is_array($lang))
 
 		return $entry;
 	}
-	
+
 	/**
 	* Check the version and return the available updates.
 	*
