@@ -9,7 +9,7 @@
 
 namespace forumhulp\copylang\migrations;
 
-class install_copylang extends \phpbb\db\migration\migration
+class install_copy_lang extends \phpbb\db\migration\migration
 {
 	public function effectively_installed()
 	{
@@ -28,8 +28,9 @@ class install_copylang extends \phpbb\db\migration\migration
 				'acp',
 				'ACP_LANGUAGE',
 				array(
-					'module_basename'	=> '\forumhulp\copylang\acp\copy_lang_module',
+					'module_basename'	=> '\forumhulp\copylang\acp\copylang_module',
 					'module_langname'	=> 'ACP_COPY_LANG',
+					'auth'				=> 'ext_forumhulp/copylang',
 					'module_mode'		=> 'index'
 				)
 			)),

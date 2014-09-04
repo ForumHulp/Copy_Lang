@@ -43,7 +43,7 @@ class listener implements EventSubscriberInterface
 	{
 		$lang_set_ext = $event['lang_set_ext'];
 		$lang_set_ext[] = array(
-			'ext_name' => 'forumhulp/copy_lang',
+			'ext_name' => 'forumhulp/copylang',
 			'lang_set' => 'copy_lang_common',
 		);
 		$event['lang_set_ext'] = $lang_set_ext;

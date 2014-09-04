@@ -1,6 +1,6 @@
 services:
-    forumhulp.copy_lang.listener:
-        class: forumhulp\copy_lang\event\listener
+    forumhulp.copylang.listener:
+        class: forumhulp\copylang\event\listener
         arguments:
             - @controller.helper
         tags:

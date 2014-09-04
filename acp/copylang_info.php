@@ -18,10 +18,10 @@ class copy_lang_info
 	function module()
 	{
 		return array(
-			'filename'	=> '\forumhulp\copylang\acp\copy_lang_module',
+			'filename'	=> '\forumhulp\copylang\acp\copylang_module',
 			'title'		=> 'ACP_COPY_LANG',
 			'version'	=> '3.1.0',
-			'modes'     => array('index' => array('title' => 'ACP_COPY_LANG', 'auth' => 'acl_a_language', 'cat' => array('ACP_LANGUAGE')),
+			'modes'     => array('index' => array('title' => 'ACP_COPY_LANG', 'auth' => 'ext_forumhulp/copylang', 'cat' => array('ACP_LANGUAGE')),
 			),
 		);
 	}
