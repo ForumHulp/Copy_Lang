@@ -78,7 +78,7 @@ class copylang_module
 					{
 						continue;
 					}
-	
+
 					if (file_exists("{$phpbb_root_path}store/$file/iso.txt"))
 					{
 						if ($iso = file("{$phpbb_root_path}store/$file/iso.txt"))
@@ -97,7 +97,7 @@ class copylang_module
 				}
 				closedir($dp);
 			}
-	
+
 			if (sizeof($new_ary))
 			{
 				$s_lang_options = $s_lang_copy_to = '<option value="" class="sep">' . $user->lang['LANGUAGE_PACK'] . '</option>';
@@ -116,7 +116,7 @@ class copylang_module
 				$template->assign_vars(array('S_LANG_OPTIONS' =>  $s_lang_options, 'S_LANG_COPY_FROM' =>  $s_lang_copy_to));
 			}
 			$template->assign_vars(array('U_ACTION' =>  $this->u_action));
-	
+
 			if (request_var('language_from', '') && request_var('language_to', '') && request_var('submit', ''))
 			{
 			$this->language_file_header = '<?php
@@ -175,12 +175,12 @@ if (empty($lang) || !is_array($lang))
 				$from_iso = request_var('language_from', '');
 				$to_iso = request_var('language_to', '');
 				$this->main_files = filelist($phpbb_root_path . 'store/' . $from_iso, '', $phpEx);
-	
+
 				$dir = $phpbb_root_path . 'store/language/' . $to_iso . '/';
 				@mkdir($dir, 0777, true);
-	
+
 				$iso = file("{$phpbb_root_path}store/$to_iso/iso.txt");
-	
+
 				$fp = @fopen($dir . 'iso.txt', 'wb');
 				$header = $iso[1] . $iso[0] . "ForumHulp.com";
 				fwrite($fp, $header);
@@ -205,7 +205,7 @@ if (empty($lang) || !is_array($lang))
 						$this->language_directory = $phpbb_root_path . 'store/' . $from_iso . '/' . (($key != '') ? $key . '/' : '');
 						include($this->language_directory . $this->language_file);
 
-						$langtype = isset($lang); 
+						$langtype = isset($lang);
 						$entry_value = (isset($lang) ? $lang : (isset($help) ? $help : (isset($words) ? $words : $synonyms)));
 
 						$header = str_replace(array('{FILENAME}', '{LANG_NAME}', '{CHANGED}', '{AUTHOR}', '{FILETYPE}'),
@@ -215,7 +215,6 @@ if (empty($lang) || !is_array($lang))
 						unset($lang, $help, $words, $synonyms);
 						$fp = @fopen($filename, 'wb');
 						fwrite($fp, $header);
-
 
 						$this->language_copy_directory = $phpbb_root_path . 'store/' . $to_iso . '/' . (($key != '') ? $key . '/' : '');
 						if (file_exists($this->language_copy_directory . $this->language_file))
@@ -288,7 +287,7 @@ if (empty($lang) || !is_array($lang))
 					$this->language_directory = $phpbb_root_path . 'store/' . $from_iso . '/';
 					include($this->language_directory . $this->language_file);
 
-					$or_lang = (isset($lang) ? $lang : (isset($help) ? $help : (isset($words) ? $words : $synonyms)));;
+					$or_lang = (isset($lang) ? $lang : (isset($help) ? $help : (isset($words) ? $words : $synonyms)));
 					unset($lang, $help, $words, $synonyms);
 
 					$to_iso = request_var('language_to', '');
@@ -497,6 +496,7 @@ if (empty($lang) || !is_array($lang))
 
 		return $entry;
 	}
+	
 	/**
 	* Check the version and return the available updates.
 	*
