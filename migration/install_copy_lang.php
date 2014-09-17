@@ -7,13 +7,13 @@
 *
 */
 
-namespace forumhulp\copylang\migrations;
+namespace forumhulp\copylang\migration;
 
 class install_copy_lang extends \phpbb\db\migration\migration
 {
 	public function effectively_installed()
 	{
-		return isset($this->config['copy_lang_version']) && version_compare($this->config['copy_lang_version'], '3.1.0', '>=');
+		return isset($this->config['copy_lang_version']) && version_compare($this->config['copy_lang_version'], '3.1.0.RC4', '>=');
 	}
 
 	static public function depends_on()
@@ -35,7 +35,7 @@ class install_copy_lang extends \phpbb\db\migration\migration
 				)
 			)),
 
-			array('config.add', array('copy_lang_version', '3.1.0')),
+			array('config.add', array('copy_lang_version', '3.1.0.RC4')),
 		);
 	}
 }
