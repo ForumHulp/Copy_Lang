@@ -7,7 +7,7 @@
 *
 */
 
-namespace forumhulp\copylang\migration;
+namespace forumhulp\copylang\migrations;
 
 class install_copy_lang extends \phpbb\db\migration\migration
 {
