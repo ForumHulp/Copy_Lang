@@ -21,18 +21,18 @@ class copylang_module
 		$action = ($request->is_set_post('download')) ? 'download' : (($request->is_set_post('add_file')) ? 'upload' : $request->variable('action', ''));
 	//	$user->add_lang_ext('forumhulp/copylang', 'info_acp_copylang');
 		$this->tpl_name = 'acp_copy_lang';
-		
+
 		$download = false;
 
 		$plupload = $phpbb_container->get('plupload');
-		$form_enctype = (ini_get('file_uploads') == '0' || strtolower(ini_get('file_uploads')) == 'off') ? '' : ' enctype="multipart/form-data"';
-		$max_filesize = ini_get("upload_max_filesize");
-		
+		$form_enctype = (@ini_get('file_uploads') == '0' || strtolower(@ini_get('file_uploads')) == 'off') ? '' : ' enctype="multipart/form-data"';
+		$max_filesize = @ini_get("upload_max_filesize");
+
 		if (!empty($max_filesize))
 		{
 			$unit = strtolower(substr($max_filesize, -1, 1));
 			$max_filesize = (int) $max_filesize;
-		
+
 			switch ($unit)
 			{
 				case 'g':
@@ -58,35 +58,35 @@ class copylang_module
 				$method = 'zip';
 				$archive_filename['physical_filename'] = 'update_languageset_' . time() . '_' . uniqid();
 				$path = $phpbb_root_path . 'store/' . $archive_filename['physical_filename'] . '.' . $method;
-			
+
 				$compress = new \compress_zip('w', $path);
 				$compress->add_file('store/language/' .  $request->variable('language_to', '') . '/', 'store/language/');
 				$compress->close();
-			
+
 				include($phpbb_root_path . 'includes/functions_download.' . $phpEx);
 				$archive_filename['physical_filename'] = $archive_filename['physical_filename'] . '.zip';
 				$archive_filename['real_filename'] = $archive_filename['physical_filename'];
 				$archive_filename['filesize'] = @filesize($path);
 				$this->delete_files($phpbb_root_path . 'store/language/');
-				
+
 				send_file_to_browser($archive_filename, 'store', 'zip');
-				
+
 				$this->delete_files($path);
 				exit();
 			break;
-			
+
 			case 'details':
 				$phpbb_container->get('forumhulp.helper')->detail('forumhulp/copylang');
 				$this->tpl_name = 'acp_ext_details';
 			break;
-	
+
 			case 'upload':
-			
+
 				$this->upload_language();
 			break;
 
 			default:
-				$iso_ary = $this->findIso();	
+				$iso_ary = $this->findIso();
 				if (sizeof($iso_ary))
 				{
 					$s_lang_options = $s_lang_copy_to = '<option value="" class="sep">' . $user->lang['LANGUAGE_PACK'] . '</option>';
@@ -100,7 +100,7 @@ class copylang_module
 					$template->assign_vars(array('S_LANG_OPTIONS' =>  $s_lang_options, 'S_LANG_COPY_FROM' =>  $s_lang_copy_to));
 				}
 				$template->assign_vars(array('U_ACTION' =>  $this->u_action));
-	
+
 				if ($request->variable('language_from', '') && $request->variable('language_to', '') && $request->variable('submit', ''))
 				{
 				$this->language_file_header = '<?php
@@ -167,7 +167,7 @@ if (empty($lang) || !is_array($lang))
 					$this->delete_files($phpbb_root_path . 'store/language/');
 					!@mkdir($dir, 0777, true);
 				}
-				
+
 				$iso = file("{$phpbb_root_path}store/$to_iso/iso.txt");
 
 				$fp = @fopen($dir . 'iso.txt', 'wb');
@@ -197,7 +197,7 @@ if (empty($lang) || !is_array($lang))
 						$entry_value = (isset($lang) ? $lang : (isset($help) ? $help : (isset($words) ? $words : $synonyms)));
 
 						$header = str_replace(array('{FILENAME}', '{LANG_NAME}', '{CHANGED}', '{AUTHOR}', '{FILETYPE}'),
-									array($file, $to_iso, date('Y-m-d', time()), 'ForumHulp.com', (($langtype) ? $this->lang_type : '')), $this->language_file_header);					
+									array($file, $to_iso, date('Y-m-d', time()), 'ForumHulp.com', (($langtype) ? $this->lang_type : '')), $this->language_file_header);
 						$header .= (isset($lang) ? $this->lang_header : (isset($help) ? $this->help_header : (isset($words) ? $this->word_header : $this->synonyms_header)));
 						unset($lang, $help, $words, $synonyms);
 						$fp = @fopen($filename, 'wb');
@@ -285,7 +285,7 @@ if (empty($lang) || !is_array($lang))
 					}
 					$tpl = $this->print_language_entries($or_lang, $copy_lang, '');
 					$template->assign_var('TPL', $tpl);
-					
+
 					$missing_vars = array_diff(array_keys($or_lang), array_keys($copy_lang));
 					$template->assign_vars(array('S_MISSING' => true, 'MISSING_VARS' => implode('<br />', $missing_vars)));
 					unset($tpl);
@@ -562,7 +562,7 @@ $tabs = $this->tabs($lang_ary);
 				{
 					continue;
 				}
-	
+
 				if (file_exists($phpbb_root_path . 'store/' . $file . '/iso.txt'))
 				{
 					if ($iso = file($phpbb_root_path . 'store/' . $file . '/iso.txt'))
@@ -625,7 +625,7 @@ $tabs = $this->tabs($lang_ary);
 		}
 		return $new_array;
 	}
-	
+
 	protected function getIso($dir)
 	{
 		global $phpbb_root_path;
@@ -648,12 +648,12 @@ $tabs = $this->tabs($lang_ary);
 
 		foreach ($iterator as $file_info)
 		{
-			if  ($file_info->getFilename() == 'iso.txt')
+			if ($file_info->getFilename() == 'iso.txt')
 			{
 				return str_replace(array(DIRECTORY_SEPARATOR, $phpbb_root_path), array('/', ''), $file_info->getPath()) . '/';
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -680,7 +680,8 @@ $tabs = $this->tabs($lang_ary);
 
 		$user->add_lang('posting');
 		$upload_dir = $phpbb_root_path . 'store/temp/';
-		if (!file_exists($upload_dir)) {
+		if (!file_exists($upload_dir))
+		{
 			mkdir($upload_dir, 0777, true);
 		}
 		$file = (version_compare($config['version'], '3.2.*', '<')) ? $upload->form_upload('fileupload') : $upload->handle_upload('files.types.form', 'fileupload');
@@ -718,13 +719,12 @@ $tabs = $this->tabs($lang_ary);
 			$this->rcopy($phpbb_root_path . $iso, $phpbb_root_path . 'store/' . basename($iso));
 			$file->remove();
 			$this->delete_files($upload_dir);
-			
+
 			$iso = $this->findIso();
 			$json_response = new \phpbb\json_response();
 			// Send the client the attachment data to maintain state
 			$json_response->send(array('iso' =>  $iso));
 		}
-
 	}
 
 	// Function to copy folders and files
@@ -747,7 +747,7 @@ $tabs = $this->tabs($lang_ary);
 				$this->trigger_error($user->lang['NO_UPLOAD_FILE'], E_USER_WARNING);
 				return false;
 			}
-			foreach($files as $file)
+			foreach ($files as $file)
 			{
 				if ($file != '.' && $file != '..')
 				{

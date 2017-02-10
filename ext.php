@@ -35,19 +35,18 @@ class ext extends \phpbb\extension\base
 		switch ($old_state)
 		{
 			case '': // Empty means nothing has run yet
-				if (empty($old_state))
-				{
-					
-				//	$this->config->increment('assets_version', 1);
+			if (empty($old_state))
+			{
+			//	$this->config->increment('assets_version', 1);
 
-					$this->container->get('user')->add_lang_ext('forumhulp/copylang', 'info_acp_copylang');
-					$this->container->get('template')->assign_var('L_EXTENSION_ENABLE_SUCCESS', $this->container->get('user')->lang['EXTENSION_ENABLE_SUCCESS'] .
-						(isset($this->container->get('user')->lang['COPYLANG_NOTICE']) ?
-							sprintf($this->container->get('user')->lang['COPYLANG_NOTICE'],
-									$this->container->get('user')->lang['ACP_CAT_CUSTOMISE'],
-									$this->container->get('user')->lang['ACP_LANGUAGE'],
-									$this->container->get('user')->lang['ACP_COPY_LANG']) : ''));
-				}
+				$this->container->get('user')->add_lang_ext('forumhulp/copylang', 'info_acp_copylang');
+				$this->container->get('template')->assign_var('L_EXTENSION_ENABLE_SUCCESS', $this->container->get('user')->lang['EXTENSION_ENABLE_SUCCESS'] .
+					(isset($this->container->get('user')->lang['COPYLANG_NOTICE']) ?
+						sprintf($this->container->get('user')->lang['COPYLANG_NOTICE'],
+								$this->container->get('user')->lang['ACP_CAT_CUSTOMISE'],
+								$this->container->get('user')->lang['ACP_LANGUAGE'],
+								$this->container->get('user')->lang['ACP_COPY_LANG']) : ''));
+			}
 
 				// Run parent enable step method
 				$this->cache	= $this->container->get('cache.driver');
