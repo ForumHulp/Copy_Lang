@@ -5,7 +5,14 @@
 		$("a.simpledialog").simpleDialog({
 	    opacity: 0.1,
 	    width: '650px',
-		height: '600px'
+		closeLabel: '&times;'
 	});
 
+	$('.row1').bind('mouseenter', function(){
+		var $this = $(this);
+	
+		if(this.offsetWidth < this.scrollWidth && !$this.attr('title')){
+			$this.attr('title', $this.text());
+		}
+	});
 })(jQuery, window, document);

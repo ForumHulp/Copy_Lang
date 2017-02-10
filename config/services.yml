@@ -1,7 +1,0 @@
-services:
-    forumhulp.copylang.listener:
-        class: forumhulp\copylang\event\listener
-        arguments:
-            - @controller.helper
-        tags:
-            - { name: event.listener }

@@ -3,8 +3,7 @@
     "type": "phpbb-extension",
     "description": "Copy language from master.",
     "homepage": "http://forumhulp.com/",
-    "version": "3.1.0.RC4",
-    "time": "2014-06-01",
+    "version": "3.1.2",
     "license": "GPL-2.0",
     "authors": [
         {

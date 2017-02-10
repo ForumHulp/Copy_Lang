@@ -1,34 +1,58 @@
-<!-- IF S_ALLOW_CDN -->
-<!-- INCLUDECSS //maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css -->
-<!-- ELSE -->
-<!-- INCLUDECSS ./../../ext/forumhulp/copylang/vendor/font-awesome/css/font-awesome.min.css -->
-<!-- ENDIF -->
 <!-- INCLUDECSS css/copylang.css -->
-<!-- INCLUDECSS css/jquery.simpledialog.css -->
+<!-- INCLUDECSS {ROOT_PATH}ext/forumhulp/helper/css/jquery.simpledialog.css -->
+<!-- INCLUDECSS {ROOT_PATH}ext/forumhulp/helper/css/ext_details.css -->
+<!-- INCLUDECSS css/plupload.css -->
 <!-- INCLUDE overall_header.html -->
 
 <a name="maincontent"></a>
 
-<h1>Copy Language Pack <a href="{U_ACTION}&amp;action=details" class="simpledialog"><i class="fa fa-info-circle"></i></a></h1>
+<h1>{L_ACP_COPY_LANG} <a href="{U_ACTION}&amp;action=details" class="simpledialog"><i class="fa fa-info-circle"></i></a></h1>
 
 <p>{L_ACP_COPY_LANG_EXPLAIN}</p>
 
-	<form id="selectmethod" method="post" action="">
+	<form id="postform" method="post" action=""{S_FORM_ENCTYPE_CL}>
 
-	<fieldset>
+	<fieldset style="background-color:#F9F9F9">
 		<legend>Copy language from to:</legend>
-		<select name="language_from" onchange="document.getElementById('language_from').value=this.options[selectedIndex].value" title="Copy language pack from"><option value="" class="sep">-----</option>{S_LANG_OPTIONS}</select>
-		<select name="language_to" onchange="document.getElementById('language_to').value=this.options[selectedIndex].value" title="Copy language pack to"><option value="" class="sep">-----</option>{S_LANG_COPY_FROM}</select>&nbsp;<input type="submit" class="button2" name="change" value="{L_SELECT}" /> <!-- IF S_LANG_SHOW --><input style="float:right;" type="submit" class="button2" name="submit" value="Translate package" /><!-- ENDIF -->
+		<select name="language_from" id="language_from" onchange="document.getElementById('language_from').value=this.options[selectedIndex].value" title="{L_LANGUAGE_KEY_FROM}">{S_LANG_OPTIONS}</select>
+		<select name="language_to" id="language_to" onchange="document.getElementById('language_to').value=this.options[selectedIndex].value" title="{L_LANGUAGE_VARIABLE_FROM}">{S_LANG_COPY_FROM}</select>&nbsp;<input type="submit" class="button2" name="change" value="{L_SELECT}" /> 
+
+        <div id="attach-panel-basic">
+        <input type="file" name="fileupload" id="fileupload" maxlength="{FILESIZE}" value="" class="inputbox autowidth" /> 
+        <input type="submit" name="add_file" value="{L_ADD_FILE}" class="button2" onclick="upload = true;" />
+        </div>
+		<div id="attach-panel-multi">
+			<input type="button" class="button2" value="{L_ADD_LANGPACK}" id="add_files" />
+		</div>
+        
+        <!-- IF S_LANG_SHOW --><!-- IF S_DOWNLOAD --><input style="float:right;" type="submit" class="button2" name="download" value="Download package" /><!-- ELSE --><input style="float:right;" type="submit" class="button2" name="submit" value="Translate package" /><!-- ENDIF --><!-- ENDIF -->
 	</fieldset>
 
 	</form>
 
 	<!-- IF S_LANG_SHOW -->
-	<form id="selectmethod" method="post" action="">
+    <script>
+		function printDiv(divName) {
+			 var printContents = document.getElementById(divName).innerHTML;
+			 var originalContents = document.body.innerHTML;
+		
+			 document.body.innerHTML = printContents;
+		
+			 window.print();
+		
+			 document.body.innerHTML = originalContents;
+		}
+	</script>
+	<form method="post" action="">
 
-	<fieldset>
+	<fieldset style="background-color:#F9F9F9">
 		<legend>Show language file:</legend>
-		<select name="language_show" onchange="this.form.submit();" style="float:left;">{S_LANG_SHOW}</select> <fieldset style="float:left;width:70%;margin:0 10px;"><legend>Missing files</legend>{MISSING_FILES}</fieldset>
+		<select name="language_show" onchange="this.form.submit();" style="float:left;">{S_LANG_SHOW}</select>
+         <fieldset style="float:right;width:70%;margin:0 10px; max-height:100px; overflow-y:scroll;">
+         	<legend><!-- IF S_MISSING -->Missing vars<!-- ELSE -->Missing files<!-- ENDIF --></legend>
+            <span style="float:right;margin-top:-20px;"><a href="#" onClick="printDiv('printableArea')"><i class="fa fa-print"></i></a></span>
+            <span id="printableArea" style="font-size:.8em;"><!-- IF S_MISSING -->{MISSING_VARS}<!-- ELSE -->{MISSING_FILES}<!-- ENDIF --></span>
+         </fieldset>         
         <input type="hidden" name="language_from" id="language_from" value="{LANG_FROM}" />
         <input type="hidden" name="language_to" id="language_to" value="{LANG_TO}" />       
 	</fieldset>
@@ -39,10 +63,9 @@
 	<thead>
 		<tr>
 			<th>{L_LANGUAGE_KEY}</th>
-			<th>{L_LANGUAGE_VARIABLE}</th>
-			<th>Copy Language</th>
+			<th>{L_LANGUAGE_VARIABLE_FROM}</th>
+			<th>{L_LANGUAGE_VARIABLE_TO}</th>
 		</tr>
-	<tr>
 	</thead>
 	<tbody>
 {TPL}
@@ -50,7 +73,7 @@
 	</table>
 	<!-- ENDIF -->
     <!-- ENDIF -->
-<!-- INCLUDEJS js/jquery.simpledialog.js -->
+<!-- INCLUDEJS {ROOT_PATH}ext/forumhulp/helper/js/jquery.simpledialog.js -->
 <!-- INCLUDEJS js/copylang.js -->
 
 <!-- INCLUDE overall_footer.html -->
