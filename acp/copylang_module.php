@@ -57,21 +57,34 @@ class copylang_module
 				$compress = new \compress;
 				$method = 'zip';
 				$archive_filename['physical_filename'] = 'update_languageset_' . time() . '_' . uniqid();
-				$path = $phpbb_root_path . 'store/' . $archive_filename['physical_filename'] . '.' . $method;
+				$file_name = $phpbb_root_path . 'store/' . $archive_filename['physical_filename'] . '.' . $method;
 
-				$compress = new \compress_zip('w', $path);
+				$compress = new \compress_zip('w', $file_name);
 				$compress->add_file('store/language/' .  $request->variable('language_to', '') . '/', 'store/language/');
 				$compress->close();
 
-				include($phpbb_root_path . 'includes/functions_download.' . $phpEx);
-				$archive_filename['physical_filename'] = $archive_filename['physical_filename'] . '.zip';
-				$archive_filename['real_filename'] = $archive_filename['physical_filename'];
-				$archive_filename['filesize'] = @filesize($path);
+				$mimetype = 'application/zip;';
+				$name = $archive_filename['physical_filename'] . '.zip';
+
+				header('Cache-Control: private, no-cache');
+				header("Content-Type: $mimetype; name=\"$name\"");
+				header("Content-disposition: attachment; filename=$name");
+
+				@set_time_limit(0);
+				$fp = @fopen($file_name, 'rb');
+				if ($fp !== false)
+				{
+					while (!feof($fp))
+					{
+						echo fread($fp, 8192);
+					}
+					fclose($fp);
+				}
+				flush();
+
 				$this->delete_files($phpbb_root_path . 'store/language/');
+				@unlink($file_name);
 
-				send_file_to_browser($archive_filename, 'store', 'zip');
-
-				$this->delete_files($path);
 				exit();
 			break;
 
@@ -81,9 +94,7 @@ class copylang_module
 			break;
 
 			case 'upload':
-
 				$this->upload_language();
-			break;
 
 			default:
 				$iso_ary = $this->findIso();
@@ -659,7 +670,7 @@ $tabs = $this->tabs($lang_ary);
 
 	protected function upload_language()
 	{
-		global $user, $config, $plupload, $phpbb_root_path, $phpbb_container, $phpEx;
+		global $user, $config, $plupload, $request, $phpbb_root_path, $phpbb_container, $phpEx;
 		$error = array();
 		$this->attachment_data = array();
 
@@ -710,9 +721,11 @@ $tabs = $this->tabs($lang_ary);
 			$this->attachment_data = array_merge(array($new_entry['attach_id'] => $new_entry), $this->attachment_data);
 			if (isset($plupload) && $plupload->is_active())
 			{
-				$json_response = new \phpbb\json_response();
-				// Send the client the attachment data to maintain state
-				$json_response->send(array('data' => $this->attachment_data, 'download_url' => $download_url, 'iso' => $iso));
+				if ($request->is_ajax())
+				{
+					$json_response = new \phpbb\json_response();
+					$json_response->send(array('data' => $this->attachment_data, 'download_url' => $download_url, 'iso' => $iso));
+				}
 			}
 		} else
 		{
@@ -721,9 +734,11 @@ $tabs = $this->tabs($lang_ary);
 			$this->delete_files($upload_dir);
 
 			$iso = $this->findIso();
-			$json_response = new \phpbb\json_response();
-			// Send the client the attachment data to maintain state
-			$json_response->send(array('iso' =>  $iso));
+			if ($request->is_ajax())
+			{
+				$json_response = new \phpbb\json_response();
+				$json_response->send(array('iso' =>  $iso));
+			}
 		}
 	}
 

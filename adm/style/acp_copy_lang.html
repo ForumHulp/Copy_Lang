@@ -17,15 +17,17 @@
 		<select name="language_from" id="language_from" onchange="document.getElementById('language_from').value=this.options[selectedIndex].value" title="{L_LANGUAGE_KEY_FROM}">{S_LANG_OPTIONS}</select>
 		<select name="language_to" id="language_to" onchange="document.getElementById('language_to').value=this.options[selectedIndex].value" title="{L_LANGUAGE_VARIABLE_FROM}">{S_LANG_COPY_FROM}</select>&nbsp;<input type="submit" class="button2" name="change" value="{L_SELECT}" /> 
 
+        <!-- IF not S_LANG_SHOW -->
         <div id="attach-panel-basic">
         <input type="file" name="fileupload" id="fileupload" maxlength="{FILESIZE}" value="" class="inputbox autowidth" /> 
-        <input type="submit" name="add_file" value="{L_ADD_FILE}" class="button2" onclick="upload = true;" />
+        <input type="submit" name="add_file" value="{L_ADD_LANGPACK}" class="button2" onclick="upload = true;" />
         </div>
+        <!-- ENDIF -->
 		<div id="attach-panel-multi">
 			<input type="button" class="button2" value="{L_ADD_LANGPACK}" id="add_files" />
 		</div>
         
-        <!-- IF S_LANG_SHOW --><!-- IF S_DOWNLOAD --><input style="float:right;" type="submit" class="button2" name="download" value="Download package" /><!-- ELSE --><input style="float:right;" type="submit" class="button2" name="submit" value="Translate package" /><!-- ENDIF --><!-- ENDIF -->
+        <!-- IF S_LANG_SHOW --><!-- IF S_DOWNLOAD --><input style="float:right;" type="submit" class="button2" id="btn_copy_lang" name="download" value="Download package" /><!-- ELSE --><input style="float:right;" type="submit" class="button2" id="btn_copy_lang" name="submit" value="Translate package" /><!-- ENDIF --><!-- ENDIF -->
 	</fieldset>
 
 	</form>
