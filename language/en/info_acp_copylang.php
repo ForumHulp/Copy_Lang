@@ -38,7 +38,7 @@ $lang = array_merge($lang, array(
 	'DESCRIPTION_NOTICE'	=> 'Extension note',
 	'ext_details' => array(
 		'details' => array(
-			'DESCRIPTION_1'	=> 'Merge two languagepack',
+			'DESCRIPTION_1'	=> 'Merge two language pack',
 			'DESCRIPTION_2'	=> 'Translate',
 			'DESCRIPTION_3'	=> 'Shows missing files',
 		),
