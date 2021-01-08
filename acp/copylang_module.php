@@ -476,7 +476,7 @@ $tabs = $this->tabs($lang_ary);
 	*/
 	function prepare_lang_entry($text, $store = true)
 	{
-		$text = (STRIP) ? stripslashes($text) : $text;
+		$text = stripslashes($text);
 
 		// Adjust for storage...
 		if ($store)
